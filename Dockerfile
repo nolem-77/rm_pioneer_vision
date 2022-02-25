@@ -26,8 +26,8 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
     && rm -rf /var/lib/apt/lists/*
 
 # create workspace
-RUN mkdir -p /ros_ws/src
-WORKDIR /ros_ws/
+RUN mkdir -p /root/ros_ws/src
+WORKDIR /root/ros_ws/
 
 # copy source code
 COPY . src/
