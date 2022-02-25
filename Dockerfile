@@ -46,7 +46,7 @@ RUN . /opt/ros/galactic/setup.sh && \
 
 RUN echo \
     $'source /opt/intel/openvino_2021/bin/setupvars.sh \n\
-    source /ros_ws/install/setup.zsh \n\
+    source /root/ros_ws/install/setup.zsh \n\
     eval "$(register-python-argcomplete3 ros2)" \n\
     eval "$(register-python-argcomplete3 colcon)"' >> ~/.zshrc
 
