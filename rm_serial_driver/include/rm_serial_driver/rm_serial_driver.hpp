@@ -29,8 +29,12 @@ public:
 
 private:
   void getParams();
+
   void receiveData();
+
   void sendData(auto_aim_interfaces::msg::Target::SharedPtr msg);
+
+  void reopenPort();
 
   std::unique_ptr<IoContext> owned_ctx_;
   std::string device_name_;

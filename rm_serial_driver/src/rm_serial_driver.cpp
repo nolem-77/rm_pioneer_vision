@@ -16,13 +16,13 @@
 #include <string>
 #include <vector>
 
-#include "rm_serial_driver/crc.h"
+#include "rm_serial_driver/crc.hpp"
 #include "rm_serial_driver/packet.hpp"
 
 namespace rm_serial_driver
 {
 RMSerialDriver::RMSerialDriver(const rclcpp::NodeOptions & options)
-: Node("RMSerialDriver", options),
+: Node("rm_serial_driver", options),
   owned_ctx_{new IoContext(2)},
   serial_driver_{new drivers::serial_driver::SerialDriver(*owned_ctx_)}
 {
@@ -70,29 +70,34 @@ RMSerialDriver::~RMSerialDriver()
 void RMSerialDriver::receiveData()
 {
   while (rclcpp::ok()) {
-    std::vector<uint8_t> header(1);
-    serial_driver_->port()->receive(header);
+    try {
+      std::vector<uint8_t> header(1);
+      serial_driver_->port()->receive(header);
 
-    if (header[0] == 0x5A) {
-      std::vector<uint8_t> data(sizeof(ReceivePacket) - 1);
-      serial_driver_->port()->receive(data);
+      if (header[0] == 0x5A) {
+        std::vector<uint8_t> data(sizeof(ReceivePacket) - 1);
+        serial_driver_->port()->receive(data);
 
-      ReceivePacket packet = fromVector(data);
-      bool crc_ok =
-        Verify_CRC16_Check_Sum(reinterpret_cast<const uint8_t *>(&packet), sizeof(packet));
-      if (crc_ok) {
-        sensor_msgs::msg::JointState joint_state;
-        joint_state.header.stamp = this->now();
-        joint_state.name.push_back("pitch_joint");
-        joint_state.name.push_back("yaw_joint");
-        joint_state.position.push_back(packet.pitch);
-        joint_state.position.push_back(packet.yaw);
-        joint_state_pub_->publish(joint_state);
+        ReceivePacket packet = fromVector(data);
+        bool crc_ok =
+          crc16::Verify_CRC16_Check_Sum(reinterpret_cast<const uint8_t *>(&packet), sizeof(packet));
+        if (crc_ok) {
+          sensor_msgs::msg::JointState joint_state;
+          joint_state.header.stamp = this->now();
+          joint_state.name.push_back("pitch_joint");
+          joint_state.name.push_back("yaw_joint");
+          joint_state.position.push_back(packet.pitch);
+          joint_state.position.push_back(packet.yaw);
+          joint_state_pub_->publish(joint_state);
+        } else {
+          RCLCPP_ERROR(get_logger(), "CRC error!");
+        }
       } else {
-        RCLCPP_ERROR(get_logger(), "CRC error!");
+        RCLCPP_WARN(get_logger(), "Invalid header: %02X", header[0]);
       }
-    } else {
-      RCLCPP_WARN(get_logger(), "Invalid header: %02X", header[0]);
+    } catch (const std::exception & ex) {
+      RCLCPP_ERROR(get_logger(), "Error while receiving data: %s", ex.what());
+      reopenPort();
     }
   }
 }
@@ -107,10 +112,15 @@ void RMSerialDriver::sendData(const auto_aim_interfaces::msg::Target::SharedPtr 
   packet.vx = msg->velocity.x;
   packet.vy = msg->velocity.y;
   packet.vz = msg->velocity.z;
-  Append_CRC16_Check_Sum(reinterpret_cast<uint8_t *>(&packet), sizeof(packet));
+  crc16::Append_CRC16_Check_Sum(reinterpret_cast<uint8_t *>(&packet), sizeof(packet));
 
   std::vector<uint8_t> data = toVector(packet);
-  serial_driver_->port()->send(data);
+
+  if (serial_driver_->port()->is_open()) {
+    serial_driver_->port()->send(data);
+  } else {
+    RCLCPP_WARN(get_logger(), "Serial port is not open, ignore sending data!");
+  }
 }
 
 void RMSerialDriver::getParams()
@@ -192,6 +202,22 @@ void RMSerialDriver::getParams()
 
   device_config_ =
     std::make_unique<drivers::serial_driver::SerialPortConfig>(baud_rate, fc, pt, sb);
+}
+
+void RMSerialDriver::reopenPort()
+{
+  RCLCPP_WARN(get_logger(), "Attempting to reopen port");
+  try {
+    if (serial_driver_->port()->is_open()) {
+      serial_driver_->port()->close();
+    }
+    serial_driver_->port()->open();
+    RCLCPP_INFO(get_logger(), "Successfully reopened port");
+  } catch (const std::exception & ex) {
+    RCLCPP_ERROR(get_logger(), "Error while reopening port: %s", ex.what());
+    rclcpp::sleep_for(std::chrono::seconds(1));
+    reopenPort();
+  }
 }
 
 }  // namespace rm_serial_driver

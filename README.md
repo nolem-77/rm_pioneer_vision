@@ -32,10 +32,11 @@
 4. 创建容器并运行
   
     ```bash
-    docker run --name=vision --network=host --privileged \
+    docker run --name=vision --network=host --privileged -d \
     --env="DISPLAY" \
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
     --volume="$HOME/.Xauthority:/root/.Xauthority:rw" \
+    -e ROBOT=guard \
     ghcr.io/chenjunnn/rm_pioneer_vision:latest
     ```
 

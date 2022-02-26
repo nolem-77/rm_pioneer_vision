@@ -1,11 +1,13 @@
 // Copyright (c) 2022 ChenJun
 // Licensed under the MIT License.
 
-#ifndef RM_SERIAL_DRIVER__CRC_H_
-#define RM_SERIAL_DRIVER__CRC_H_
+#ifndef RM_SERIAL_DRIVER__CRC_HPP_
+#define RM_SERIAL_DRIVER__CRC_HPP_
 
 #include <cstdint>
 
+namespace crc16
+{
 const uint16_t CRC16_INIT = 0xFFFF;
 
 const uint16_t W_CRC_TABLE[256] = {
@@ -83,10 +85,12 @@ void Append_CRC16_Check_Sum(uint8_t * pchMessage, uint32_t dwLength)
 
   if ((pchMessage == nullptr) || (dwLength <= 2)) return;
 
-  w_crc = Get_CRC16_Check_Sum((uint8_t *)pchMessage, dwLength - 2, CRC16_INIT);
+  w_crc = Get_CRC16_Check_Sum(reinterpret_cast<uint8_t *>(pchMessage), dwLength - 2, CRC16_INIT);
 
   pchMessage[dwLength - 2] = (uint8_t)(w_crc & 0x00ff);
   pchMessage[dwLength - 1] = (uint8_t)((w_crc >> 8) & 0x00ff);
 }
 
-#endif  // RM_SERIAL_DRIVER__CRC_H_
+}  // namespace crc16
+
+#endif  // RM_SERIAL_DRIVER__CRC_HPP_
