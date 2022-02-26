@@ -1,5 +1,7 @@
 # rm_pioneer_vision
 
+![Build Status](https://github.com/chenjunnn/rm_pioneer_vision/actions/workflows/ci.yml/badge.svg)
+
 ## 使用 Docker 部署 (Recommended)
 
 1. [Install Docker using the convenience script](https://docs.docker.com/engine/install/ubuntu/#install-using-the-convenience-script)
