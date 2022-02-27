@@ -38,8 +38,9 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/*
 
 # build source
-RUN . /opt/ros/galactic/setup.sh && \
-    . /opt/intel/openvino_2021/bin/setupvars.sh && \
+SHELL [ "/bin/zsh", "-c" ]
+RUN source /opt/ros/galactic/setup.bash && \
+    source /opt/intel/openvino_2021/bin/setupvars.sh && \
     colcon build \
     --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=1 \
     --symlink-install
@@ -50,7 +51,7 @@ RUN echo \
     eval "$(register-python-argcomplete3 ros2)" \n\
     eval "$(register-python-argcomplete3 colcon)"' >> ~/.zshrc
 
-ENV ROBOT=guard DEBUG=true
+ENV ROBOT=guard
 
 CMD [ "/bin/zsh", "-c", "source /root/ros_ws/install/setup.zsh && \
     source /opt/intel/openvino_2021/bin/setupvars.sh && \

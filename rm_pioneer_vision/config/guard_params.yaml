@@ -4,14 +4,14 @@
 
     analog_gain: 10
     exposure_time: 5000
+    gamma: 100
 
     rgb_gain:
-      b: 110
-      g: 100
+      b: 90
+      g: 90
       r: 110
 
     saturation: 100
-    gamma: 100
 
 
 /armor_detector:
@@ -20,21 +20,13 @@
     subscribe_compressed: false
 
     preprocess:
-      b:
-        hmin: 75
-        hmax: 120
-        lmin: 170
-        smin: 100
-      r:
-        hmin: 150
-        hmax: 25
-        lmin: 175
-        smin: 100
-      morph_size: 5      
+      hmin: 90
+      lmin: 165
+      smin: 100
 
     light:
       max_angle: 40.0
-      max_ratio: 0.55
+      max_ratio: 0.6
       min_ratio: 0.1
 
     armor:

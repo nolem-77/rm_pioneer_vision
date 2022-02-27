@@ -38,7 +38,7 @@
     --env="DISPLAY" \
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
     --volume="$HOME/.Xauthority:/root/.Xauthority:rw" \
-    -e ROBOT=guard \
+    -e ROBOT=guard -e ROS_DOMAIN_ID=1 \
     ghcr.io/chenjunnn/rm_pioneer_vision:latest
     ```
 
