@@ -39,7 +39,7 @@ RUN apt-get update && \
 
 # build source
 SHELL [ "/bin/zsh", "-c" ]
-RUN source /opt/ros/galactic/setup.bash && \
+RUN source /opt/ros/galactic/setup.zsh && \
     source /opt/intel/openvino_2021/bin/setupvars.sh && \
     colcon build \
     --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=1 \
