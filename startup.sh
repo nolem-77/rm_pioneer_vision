@@ -1,4 +1,5 @@
 #!/bin/zsh
+
 source /root/ros_ws/install/setup.zsh
 source /opt/intel/openvino_2021/bin/setupvars.sh
 
