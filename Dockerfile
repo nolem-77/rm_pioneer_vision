@@ -45,7 +45,7 @@ RUN source /opt/ros/galactic/setup.zsh && \
     --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=1 \
     --symlink-install
 
-RUN echo \
+RUN sed -i '4d' ~/.zshrc && echo \
     $'source /opt/intel/openvino_2021/bin/setupvars.sh \n\
     source /root/ros_ws/install/setup.zsh \n\
     eval "$(register-python-argcomplete3 ros2)" \n\
@@ -53,6 +53,4 @@ RUN echo \
 
 ENV ROBOT=guard
 
-CMD [ "/bin/zsh", "-c", "source /root/ros_ws/install/setup.zsh && \
-    source /opt/intel/openvino_2021/bin/setupvars.sh && \
-    ros2 launch rm_pioneer_vision vision_bringup.launch.py robot:=${ROBOT}" ]
+CMD [ "/bin/zsh", "-c", "src/startup.sh" ]

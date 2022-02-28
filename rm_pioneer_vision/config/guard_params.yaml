@@ -19,14 +19,11 @@
     use_depth: false
     subscribe_compressed: false
 
-    preprocess:
-      hmin: 90
-      lmin: 165
-      smin: 100
+    min_lightness: 170
 
     light:
       max_angle: 40.0
-      max_ratio: 0.6
+      max_ratio: 0.3
       min_ratio: 0.1
 
     armor:
