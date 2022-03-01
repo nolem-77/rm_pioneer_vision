@@ -32,6 +32,10 @@
       min_center_ratio: 0.4
       min_light_ratio: 0.6
 
+    number_classifier:
+      height_ratio: 1.1
+      weight_ratio: 0.4
+
 /armor_processor:
   ros__parameters:
     target_frame: shooter_link
