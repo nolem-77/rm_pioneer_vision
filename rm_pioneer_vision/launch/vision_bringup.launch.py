@@ -28,22 +28,35 @@ def generate_launch_description():
     xacro_file = Command(
         ['xacro ', urdf_dir, '/', robot, '.urdf.xacro'])
 
-    mv_camera_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(
-                get_package_share_directory('mindvision_camera'),
-                'launch', 'mv_launch.py')),
-        launch_arguments={'params_file': params_file,
-                          'camera_info_url': camera_info_url,
-                          'use_sensor_data_qos': 'true'}.items())
+    mv_camera_node = Node(
+        package='mindvision_camera',
+        executable='mindvision_camera_node',
+        output='screen',
+        emulate_tty=True,
+        parameters=[params_file, {
+            'camera_info_url': camera_info_url,
+            'use_sensor_data_qos': False,
+        }],
+    )
 
-    rm_auto_aim_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(
-                get_package_share_directory('rm_auto_aim'),
-                'launch', 'auto_aim.launch.py')),
-        launch_arguments={'detector_params_file': params_file,
-                          'debug': 'false'}.items())
+    detector_node = Node(
+        package='armor_detector',
+        executable='rgb_detector_node',
+        output='screen',
+        emulate_tty=True,
+        parameters=[params_file, {
+            'detect_color': 0,
+            'debug': False,
+        }],
+    )
+
+    processor_node = Node(
+        package='armor_processor',
+        executable='armor_processor_node',
+        output='screen',
+        emulate_tty=True,
+        parameters=[params_file, {'debug': False}],
+    )
 
     rm_serial_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -59,8 +72,9 @@ def generate_launch_description():
 
     return LaunchDescription([
         robot_type_launch_arg,
-        mv_camera_launch,
-        rm_auto_aim_launch,
+        mv_camera_node,
+        detector_node,
+        processor_node,
         rm_serial_launch,
         robot_state_publisher,
     ])
