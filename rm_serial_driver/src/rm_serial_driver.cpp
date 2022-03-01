@@ -50,6 +50,9 @@ RMSerialDriver::RMSerialDriver(const rclcpp::NodeOptions & options)
   target_sub_ = this->create_subscription<auto_aim_interfaces::msg::Target>(
     "/processor/target", rclcpp::SensorDataQoS(),
     std::bind(&RMSerialDriver::sendData, this, std::placeholders::_1));
+
+  // Latency Publisher
+  latency_pub_ = this->create_publisher<std_msgs::msg::Float64>("/latency", 10);
 }
 
 RMSerialDriver::~RMSerialDriver()
@@ -121,6 +124,10 @@ void RMSerialDriver::sendData(const auto_aim_interfaces::msg::Target::SharedPtr 
   } else {
     RCLCPP_WARN(get_logger(), "Serial port is not open, ignore sending data!");
   }
+
+  std_msgs::msg::Float64 latency;
+  latency.data = (this->now() - msg->header.stamp).seconds() * 1000.0;
+  latency_pub_->publish(latency);
 }
 
 void RMSerialDriver::getParams()

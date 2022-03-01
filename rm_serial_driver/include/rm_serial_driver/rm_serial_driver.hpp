@@ -9,6 +9,7 @@
 #include <rclcpp/subscription.hpp>
 #include <sensor_msgs/msg/joint_state.hpp>
 #include <serial_driver/serial_driver.hpp>
+#include <std_msgs/msg/float64.hpp>
 
 // C++ system
 #include <memory>
@@ -43,6 +44,8 @@ private:
 
   rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr joint_state_pub_;
   rclcpp::Subscription<auto_aim_interfaces::msg::Target>::SharedPtr target_sub_;
+
+  rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr latency_pub_;
 
   std::thread receive_thread_;
 };
