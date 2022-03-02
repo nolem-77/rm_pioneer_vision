@@ -1,6 +1,7 @@
 # rm_pioneer_vision
 
-![Build Status](https://github.com/chenjunnn/rm_pioneer_vision/actions/workflows/ci.yml/badge.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Build Status](https://github.com/chenjunnn/rm_pioneer_vision/actions/workflows/ci.yml/badge.svg)](https://github.com/chenjunnn/rm_pioneer_vision/actions/workflows/ci.yml)
 
 ## 使用 Docker 部署 (Recommended)
 
