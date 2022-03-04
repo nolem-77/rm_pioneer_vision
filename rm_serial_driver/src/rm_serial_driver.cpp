@@ -222,8 +222,10 @@ void RMSerialDriver::reopenPort()
     RCLCPP_INFO(get_logger(), "Successfully reopened port");
   } catch (const std::exception & ex) {
     RCLCPP_ERROR(get_logger(), "Error while reopening port: %s", ex.what());
-    rclcpp::sleep_for(std::chrono::seconds(1));
-    reopenPort();
+    if (rclcpp::ok()) {
+      rclcpp::sleep_for(std::chrono::seconds(1));
+      reopenPort();
+    }
   }
 }
 
