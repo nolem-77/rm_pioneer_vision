@@ -107,27 +107,28 @@ void RMSerialDriver::receiveData()
 
 void RMSerialDriver::sendData(const auto_aim_interfaces::msg::Target::SharedPtr msg)
 {
-  SendPacket packet;
-  packet.target_found = msg->target_found;
-  packet.x = msg->position.x;
-  packet.y = msg->position.y;
-  packet.z = msg->position.z;
-  packet.vx = msg->velocity.x;
-  packet.vy = msg->velocity.y;
-  packet.vz = msg->velocity.z;
-  crc16::Append_CRC16_Check_Sum(reinterpret_cast<uint8_t *>(&packet), sizeof(packet));
+  try {
+    SendPacket packet;
+    packet.target_found = msg->target_found;
+    packet.x = msg->position.x;
+    packet.y = msg->position.y;
+    packet.z = msg->position.z;
+    packet.vx = msg->velocity.x;
+    packet.vy = msg->velocity.y;
+    packet.vz = msg->velocity.z;
+    crc16::Append_CRC16_Check_Sum(reinterpret_cast<uint8_t *>(&packet), sizeof(packet));
 
-  std::vector<uint8_t> data = toVector(packet);
+    std::vector<uint8_t> data = toVector(packet);
 
-  if (serial_driver_->port()->is_open()) {
     serial_driver_->port()->send(data);
-  } else {
-    RCLCPP_WARN(get_logger(), "Serial port is not open, ignore sending data!");
-  }
 
-  std_msgs::msg::Float64 latency;
-  latency.data = (this->now() - msg->header.stamp).seconds() * 1000.0;
-  latency_pub_->publish(latency);
+    std_msgs::msg::Float64 latency;
+    latency.data = (this->now() - msg->header.stamp).seconds() * 1000.0;
+    latency_pub_->publish(latency);
+  } catch (const std::exception & ex) {
+    RCLCPP_ERROR(get_logger(), "Error while sending data: %s", ex.what());
+    reopenPort();
+  }
 }
 
 void RMSerialDriver::getParams()
