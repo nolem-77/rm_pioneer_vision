@@ -13,7 +13,6 @@
 
     saturation: 100
 
-
 /armor_detector:
   ros__parameters:
     use_depth: false
@@ -35,12 +34,10 @@
     number_classifier:
       height_ratio: 1.0
       weight_ratio: 0.28
-      confidence_threshold: 0.6
+      confidence_threshold: 0.7
 
 /armor_processor:
   ros__parameters:
-    target_frame: shooter_link
-
     tracker:
       max_match_distance: 0.2
       tracking_threshold: 5
