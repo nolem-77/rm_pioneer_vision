@@ -25,7 +25,8 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
     && rm -rf /var/lib/apt/lists/*
 
 # install clangd
-RUN apt-get install -y clangd-12 && \
+RUN apt-get update && \
+    apt-get install -y clangd-12 && \
     update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-12 100 && \
     rm -rf /var/lib/apt/lists/*
 
