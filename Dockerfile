@@ -24,6 +24,11 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
     -p https://github.com/zsh-users/zsh-syntax-highlighting \
     && rm -rf /var/lib/apt/lists/*
 
+# install clangd
+RUN apt-get install -y clangd-12 && \
+    update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-12 100 && \
+    rm -rf /var/lib/apt/lists/*
+
 # create workspace
 RUN mkdir -p /root/ros_ws/src
 WORKDIR /root/ros_ws/

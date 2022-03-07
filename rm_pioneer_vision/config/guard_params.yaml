@@ -27,14 +27,14 @@
 
     armor:
       max_angle: 35.0
-      max_center_ratio: 1.6
-      min_center_ratio: 0.4
+      max_center_distance: 3.2
+      min_center_distance: 0.8
       min_light_ratio: 0.6
 
     number_classifier:
-      height_ratio: 1.0
-      weight_ratio: 0.28
-      confidence_threshold: 0.7
+      height_factor: 2.0
+      width_factor: 0.56
+      similarity_threshold: 0.7
 
 /armor_processor:
   ros__parameters:
