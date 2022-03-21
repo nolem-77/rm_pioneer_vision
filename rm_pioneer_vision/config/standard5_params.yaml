@@ -2,10 +2,10 @@
   ros__parameters:
     camera_name: mv_camera
 
-    analog_gain: 40
+    analog_gain: 50
     exposure_time: 8000
     flip_image: true
-    gamma: 100
+    gamma: 60
 
     rgb_gain:
       b: 110
@@ -31,12 +31,16 @@
       max_center_ratio: 1.6
       min_center_ratio: 0.4
       min_light_ratio: 0.6
+      max_large_center_distance: 5.0
+      min_large_center_distance: 3.2
+      max_small_center_distance: 3.1
+      min_small_center_distance: 0.8
 
     number_classifier:
-      height_ratio: 1.1
-      weight_ratio: 0.4
-      confidence_threshold: 0.7
-
+      height_factor: 2.0
+      large_width_factor: 0.4
+      small_width_factor: 0.56
+      similarity_threshold: 0.5
 /armor_processor:
   ros__parameters:
     tracker:
