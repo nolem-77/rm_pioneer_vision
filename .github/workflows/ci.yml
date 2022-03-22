@@ -37,6 +37,9 @@ jobs:
           submodules: true
           token: ${{ secrets.PAT }}
 
+      - name: Unset AUTHORIZATION
+        run: git config --local --unset http.https://github.com/.extraheader
+
       - name: Log in to the Container registry
         uses: docker/login-action@v1
         with:
