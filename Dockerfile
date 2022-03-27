@@ -23,12 +23,12 @@ COPY . src/rm_pioneer_vision
 
 # install dependencies
 RUN apt-get update && \
+    apt-get install -y ros-galactic-xacro && \
     rosdep install --from-paths src --ignore-src -r -y \
     && rm -rf /var/lib/apt/lists/*
 
 # build source
-SHELL [ "/bin/zsh", "-c" ]
-RUN source /opt/ros/galactic/setup.zsh && \
+RUN . /opt/ros/galactic/setup.sh && \
     colcon build \
     --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=1 \
     --symlink-install
@@ -41,4 +41,4 @@ RUN echo \
 
 ENV ROBOT=standard3
 
-CMD [ "src/startup.sh" ]
+CMD [ "src/rm_pioneer_vision/startup.sh" ]

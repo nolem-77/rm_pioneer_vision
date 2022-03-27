@@ -15,7 +15,7 @@ jobs:
         with:
           required-ros-distributions: galactic
 
-      - name: Build rm_pioneer_vision and run tests
+      - name: Build rm_serial_driver and run tests
         uses: ros-tooling/action-ros-ci@v0.2
         with:
           package-name: rm_serial_driver
