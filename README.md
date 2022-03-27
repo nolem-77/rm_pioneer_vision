@@ -39,7 +39,9 @@
     --env="DISPLAY" \
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
     --volume="$HOME/.Xauthority:/root/.Xauthority:rw" \
-    -e ROBOT=guard -e ROS_DOMAIN_ID=1 \
+    --volume="$HOME/config/:/root/ros_ws/src/rm_pioneer_config:rw" \
+    -e ROBOT=guard \
+    -e ROS_DOMAIN_ID=1 \
     ghcr.io/chenjunnn/rm_pioneer_vision:latest
     ```
 
@@ -54,5 +56,7 @@
     ```bash
     sudo systemctl enable docker.service
     sudo systemctl enable containerd.service
+    ```
+    ```bash
     docker update --restart always vision
     ```
