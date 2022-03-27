@@ -19,6 +19,7 @@ jobs:
         uses: ros-tooling/action-ros-ci@v0.2
         with:
           package-name: rm_serial_driver
+          import-token: ${{ secrets.PAT }}
           target-ros2-distro: galactic
 
   build-and-push-image:
