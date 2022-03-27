@@ -1,5 +1,11 @@
 FROM osrf/ros:galactic-desktop
 
+# install clangd, autopep8, wget
+RUN apt-get update && \
+    apt-get install -y clangd-12 python3-autopep8 wget && \
+    update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-12 100 && \
+    rm -rf /var/lib/apt/lists/*
+
 # setup zsh
 RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.2/zsh-in-docker.sh)" -- \
     -t jispwoso \
@@ -7,12 +13,6 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
     -p https://github.com/zsh-users/zsh-autosuggestions \
     -p https://github.com/zsh-users/zsh-syntax-highlighting \
     && rm -rf /var/lib/apt/lists/*
-
-# install clangd and autopep8
-RUN apt-get update && \
-    apt-get install -y clangd-12 python3-autopep8 && \
-    update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-12 100 && \
-    rm -rf /var/lib/apt/lists/*
 
 # create workspace
 RUN mkdir -p /root/ros_ws/src
