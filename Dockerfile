@@ -34,7 +34,7 @@ RUN . /opt/ros/galactic/setup.sh && \
     --symlink-install
 
 RUN echo \
-    $'export TERM=xterm-256color \n\
+    'export TERM=xterm-256color \n\
     source /root/ros_ws/install/setup.zsh \n\
     eval "$(register-python-argcomplete3 ros2)" \n\
     eval "$(register-python-argcomplete3 colcon)"' >> ~/.zshrc
