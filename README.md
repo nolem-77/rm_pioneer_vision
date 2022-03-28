@@ -42,7 +42,8 @@
 4. 创建容器并运行
   
     ```bash
-    docker run --name=vision --network=host --privileged -d \
+    docker run --name vision --network host --privileged -d \
+    --restart always \
     -e DISPLAY \
     -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
     -e ROBOT=guard \
