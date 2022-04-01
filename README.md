@@ -43,7 +43,7 @@
   
     ```bash
     docker run --name vision --network host --privileged -d \
-    --restart always \
+    -v /dev/bus/usb:/dev/bus/usb/ --restart always \
     -e DISPLAY \
     -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
     -e ROBOT=guard \
