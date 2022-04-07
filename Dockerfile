@@ -1,9 +1,8 @@
 FROM osrf/ros:galactic-desktop
 
-# install clangd, autopep8, wget
+# install autopep8 & wget
 RUN apt-get update && \
-    apt-get install -y clangd-12 python3-autopep8 wget && \
-    update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-12 100 && \
+    apt-get install -y python3-autopep8 wget && \
     rm -rf /var/lib/apt/lists/*
 
 # setup zsh
