@@ -32,13 +32,11 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: true
           token: ${{ secrets.PAT }}
-
-      - name: Unset AUTHORIZATION
-        run: git config --local --unset http.https://github.com/.extraheader
+          persist-credentials: false
 
       - name: Log in to the Container registry
         uses: docker/login-action@v1
