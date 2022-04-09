@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build-and-test:
+  colcon-build-and-test:
     runs-on: ubuntu-latest
     steps:
       - name: Setup ROS 2
@@ -22,8 +22,8 @@ jobs:
           import-token: ${{ secrets.PAT }}
           target-ros2-distro: galactic
 
-  build-and-push-image:
-    needs: build-and-test
+  docker-build-and-push:
+    needs: colcon-build-and-test
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     permissions:
