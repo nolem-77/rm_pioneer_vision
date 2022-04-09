@@ -56,11 +56,11 @@
 5. 使用`exec`命令进入容器并启动 rviz2
 
     ```bash
-    # opening up xhost to vision container
-    xhost +local:`docker inspect --format='{{ .Config.Hostname }}' vision`
+    # opening up xhost to local connection
+    xhost +local:
     # run zsh in vision container
     docker exec -it vision zsh
-    # in vision container
+    # run rviz2 in vision container
     rviz2 -d src/rm_pioneer_vision/vision.rviz
     ```
     
