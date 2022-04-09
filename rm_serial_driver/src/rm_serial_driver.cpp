@@ -72,16 +72,20 @@ RMSerialDriver::~RMSerialDriver()
 
 void RMSerialDriver::receiveData()
 {
+  std::vector<uint8_t> header(1);
+  std::vector<uint8_t> data(sizeof(ReceivePacket));
+
   while (rclcpp::ok()) {
     try {
-      std::vector<uint8_t> header(1);
       serial_driver_->port()->receive(header);
 
       if (header[0] == 0x5A) {
-        std::vector<uint8_t> data(sizeof(ReceivePacket) - 1);
-        serial_driver_->port()->receive(data);
+        data.clear();
+        data.emplace_back(header[0]);
 
+        serial_driver_->port()->receive(data);
         ReceivePacket packet = fromVector(data);
+
         bool crc_ok =
           crc16::Verify_CRC16_Check_Sum(reinterpret_cast<const uint8_t *>(&packet), sizeof(packet));
         if (crc_ok) {
