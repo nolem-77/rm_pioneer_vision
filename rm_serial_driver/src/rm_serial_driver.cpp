@@ -73,17 +73,18 @@ RMSerialDriver::~RMSerialDriver()
 void RMSerialDriver::receiveData()
 {
   std::vector<uint8_t> header(1);
-  std::vector<uint8_t> data(sizeof(ReceivePacket));
+  std::vector<uint8_t> data;
+  data.reserve(sizeof(ReceivePacket));
 
   while (rclcpp::ok()) {
     try {
       serial_driver_->port()->receive(header);
 
       if (header[0] == 0x5A) {
-        data.clear();
-        data.emplace_back(header[0]);
-
+        data.resize(sizeof(ReceivePacket) - 1);
         serial_driver_->port()->receive(data);
+
+        data.insert(data.begin(), header[0]);
         ReceivePacket packet = fromVector(data);
 
         bool crc_ok =
