@@ -42,14 +42,11 @@
 4. 创建容器并运行
   
     ```bash
-    docker run --name vision --network host --privileged -d \
-    -v /dev/bus/usb:/dev/bus/usb/ --restart always \
-    -e DISPLAY \
-    -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
-    -e ROBOT=guard \
-    -e ROS_DOMAIN_ID=1 \
+    docker run --name vision --restart always --privileged \
+    -v /dev/bus/usb:/dev/bus/usb/ --network host \
+    -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
     -v $HOME/config/:/root/ros_ws/src/rm_pioneer_config:rw \
-    ghcr.io/chenjunnn/rm_pioneer_vision:latest
+    -e ROBOT=standard3 -it ghcr.io/chenjunnn/rm_pioneer_vision:latest
     ```
     > Tips: 需要在图形化界面中启动容器，否则在容器内无法正常使用 GUI
 
@@ -61,6 +58,6 @@
     # run zsh in vision container
     docker exec -it vision zsh
     # run rviz2 in vision container
-    rviz2 -d src/rm_pioneer_vision/vision.rviz
+    rviz2 -d vision.rviz
     ```
     
