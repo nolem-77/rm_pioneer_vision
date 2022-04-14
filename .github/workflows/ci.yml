@@ -57,6 +57,6 @@ jobs:
         with:
           context: .
           push: true
-          build-args: [ "--build-arg BASE_IMAGE=osrf/ros:galactic-desktop" ]
+          build-args: BASE_IMAGE=osrf/ros:galactic-desktop
           tags: ghcr.io/chenjunnn/rm_pioneer_vision:desktop, 
                 ghcr.io/chenjunnn/rm_pioneer_vision:latest
