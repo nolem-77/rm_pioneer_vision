@@ -1,4 +1,6 @@
-FROM osrf/ros:galactic-desktop
+# use ros base image as default
+ARG BASE_IMAGE=ros:galactic-ros-base
+FROM ${BASE_IMAGE}
 
 # install autopep8 & wget
 RUN apt-get update && \
