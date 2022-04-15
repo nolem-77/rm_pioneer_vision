@@ -51,7 +51,7 @@
     ```bash
     docker run --name vision --restart always --privileged \
     -v /dev/bus/usb:/dev/bus/usb/ --network host \
-    -v $HOME/config/:/root/ros_ws/src/rm_pioneer_config:rw \
+    -v $HOME/config/:/root/ros_ws/src/rm_pioneer_config \
     -e ROBOT=standard3 -it ghcr.io/chenjunnn/rm_pioneer_vision:base
     ```
     
