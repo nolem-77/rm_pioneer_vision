@@ -72,7 +72,7 @@
     xhost +local:
     # run zsh in vision container
     docker exec -it vision zsh
-    # run rviz2 in vision container
-    rviz2 -d vision.rviz
+    # launch visualization
+    ros2 launch rm_pioneer_bringup visualization.launch.py
     ```
     
