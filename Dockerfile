@@ -12,8 +12,9 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
     -t jispwoso \
     -p git \
     -p https://github.com/zsh-users/zsh-autosuggestions \
-    -p https://github.com/zsh-users/zsh-syntax-highlighting \
-    && rm -rf /var/lib/apt/lists/*
+    -p https://github.com/zsh-users/zsh-syntax-highlighting && \
+    chsh -s /bin/zsh && \
+    rm -rf /var/lib/apt/lists/*
 
 # create workspace
 RUN mkdir -p /root/ros_ws/src
