@@ -27,7 +27,7 @@ COPY .docker/* .
 
 # install dependencies
 RUN apt-get update && \
-    apt-get install -y ros-galactic-xacro && \
+    apt-get install -y ros-galactic-xacro ros-galactic-camera-info-manager && \
     rosdep install --from-paths src --ignore-src -r -y \
     && rm -rf /var/lib/apt/lists/*
 

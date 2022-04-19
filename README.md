@@ -51,6 +51,7 @@
     ```bash
     docker run --name vision --restart always --privileged \
     -v /dev/bus/usb:/dev/bus/usb/ --network host \
+    -v $HOME/.vscode-server:/root/.vscode-server \
     -v $HOME/config/:/root/ros_ws/src/rm_pioneer_config \
     -e ROBOT=standard3 -it ghcr.io/chenjunnn/rm_pioneer_vision:base
     ```
@@ -60,6 +61,7 @@
     docker run --name vision --restart always --privileged \
     -v /dev/bus/usb:/dev/bus/usb/ --network host \
     -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v $HOME/.vscode-server:/root/.vscode-server \
     -v $HOME/config/:/root/ros_ws/src/rm_pioneer_config \
     -e ROBOT=standard3 -it ghcr.io/chenjunnn/rm_pioneer_vision:desktop
     ```
