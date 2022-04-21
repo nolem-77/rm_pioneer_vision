@@ -1,12 +1,5 @@
 #!/bin/zsh
 
-# Clone config repo if it doesn't exist
-if [ ! "$(ls -A /root/ros_ws/src/rm_pioneer_config)" ]; then
-    git clone https://github.com/chenjunnn/rm_pioneer_config -b ${ROBOT} src/rm_pioneer_config
-else
-    export ROBOT=$(git -C src/rm_pioneer_config branch --show-current)
-fi
-
 case $ROBOT in
     hero)
         export ROS_DOMAIN_ID=1
@@ -60,6 +53,11 @@ case $camera_type in
         echo "Unknown camera type: $camera_type"
         ;;
 esac
+
+# Clone config repo if it doesn't exist
+if [ ! "$(ls -A /root/ros_ws/src/rm_pioneer_config)" ]; then
+    git clone https://github.com/chenjunnn/rm_pioneer_config -b ${ROBOT} src/rm_pioneer_config
+fi
 
 colcon build --symlink-install --packages-select rm_pioneer_description rm_pioneer_bringup
 
