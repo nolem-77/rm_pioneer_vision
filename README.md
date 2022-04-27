@@ -26,12 +26,13 @@
     sudo systemctl enable containerd.service
     ```
 
-5. [Authenticating to the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-to-the-container-registry)
+5. 登录 Github Container registry
 
     ```bash
-    export CR_PAT=YOUR_TOKEN
-    echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin
+    docker login ghcr.io
     ```
+    - Username 为 Github 用户名
+    - Password 为具有 `read:packages` 权限的 [PAT](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
 
 3. 拉取镜像
     
@@ -50,22 +51,26 @@
     基础镜像：
     ```bash
     docker run --name vision --restart always --privileged \
-    -v /dev/bus/usb:/dev/bus/usb/ --network host \
-    -v $HOME/.vscode-server:/root/.vscode-server \
-    -v $HOME/config/:/root/ros_ws/src/rm_pioneer_config \
+    -v /dev/bus/usb:/dev/bus/usb --network host \
+    -v $HOME/config:/root/ros_ws/src/rm_pioneer_config \
     -e ROBOT=standard3 -it ghcr.io/chenjunnn/rm_pioneer_vision:base
     ```
     
     桌面镜像：
     ```bash
     docker run --name vision --restart always --privileged \
-    -v /dev/bus/usb:/dev/bus/usb/ --network host \
+    -v /dev/bus/usb:/dev/bus/usb --network host \
     -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix \
     -v $HOME/.vscode-server:/root/.vscode-server \
-    -v $HOME/config/:/root/ros_ws/src/rm_pioneer_config \
+    -v $HOME/config:/root/ros_ws/src/rm_pioneer_config \
     -e ROBOT=standard3 -it ghcr.io/chenjunnn/rm_pioneer_vision:desktop
     ```
-    > Tips: 需要在图形化界面中启动容器，否则在容器内无法正常使用 GUI
+    Tips: 
+    - desktop镜像需要在图形化界面中启动容器，否则在容器内无法正常使用 GUI
+    - 若需要使用 VSCode 进入容器，可在容器创建命令中加入如下行，以避免每次创建新容器时需要重新下载 vscode-server
+      ```
+      -v $HOME/.vision-vscode-server:/root/.vscode-server
+      ```
 
 5. 使用`exec`命令进入容器并启动 rviz2
 
