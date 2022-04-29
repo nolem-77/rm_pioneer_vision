@@ -46,7 +46,7 @@ RMSerialDriver::RMSerialDriver(const rclcpp::NodeOptions & options)
     {"detect_color"}, [this](std::shared_future<std::vector<rclcpp::Parameter>> future) {
       future.wait();
       auto result = future.get();
-      present_color_ = result.at(1).as_int();
+      present_color_ = result.at(0).as_int();
       RCLCPP_INFO(this->get_logger(), "Present color: %d.", present_color_);
     });
 
