@@ -7,7 +7,7 @@ case $ROBOT in
         ;;
     standard3)
         export ROS_DOMAIN_ID=3
-        camera_type=mindvision
+        camera_type=hik
         ;;
     standard4)
         export ROS_DOMAIN_ID=4
